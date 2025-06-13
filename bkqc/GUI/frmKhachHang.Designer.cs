@@ -47,6 +47,7 @@
             dgvKhachHang.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvKhachHang.Location = new Point(12, 12);
             dgvKhachHang.Name = "dgvKhachHang";
+            dgvKhachHang.ReadOnly = true;
             dgvKhachHang.Size = new Size(776, 212);
             dgvKhachHang.TabIndex = 0;
             dgvKhachHang.SelectionChanged += dgvKhachHang_SelectionChanged;
@@ -126,9 +127,9 @@
             // 
             btnLuu.BackColor = Color.FromArgb(192, 192, 255);
             btnLuu.FlatStyle = FlatStyle.Flat;
-            btnLuu.Location = new Point(475, 352);
+            btnLuu.Location = new Point(301, 352);
             btnLuu.Name = "btnLuu";
-            btnLuu.Size = new Size(126, 67);
+            btnLuu.Size = new Size(300, 67);
             btnLuu.TabIndex = 8;
             btnLuu.Text = "Lưu";
             btnLuu.UseVisualStyleBackColor = false;

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using bkqc.BLL;
+﻿using bkqc.BLL;
+using bkqc.DAL;
 using bkqc.DTO;
+using System;
+using System.Windows.Forms;
 
 namespace bkqc.GUI
 {
@@ -15,12 +16,7 @@ namespace bkqc.GUI
 
         public frmKhanQuangCo()
         {
-            InitializeComponent(); 
-            LoadComboBoxes();
-            LoadKhanQuangCo();
-            SetControlState(isEditing: false);
-
-            dgvKhanQuangCo.SelectionChanged += dgvKhanQuangCo_SelectionChanged;
+            InitializeComponent();
         }
 
         private void LoadComboBoxes()
@@ -43,29 +39,25 @@ namespace bkqc.GUI
 
         private void LoadKhanQuangCo()
         {
-            try
-            {
-                dgvKhanQuangCo.DataSource = khanBLL.GetAll();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi load dữ liệu khăn: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            dgvKhanQuangCo.DataSource = khanBLL.GetAll();
+            ClearInput();
         }
 
         private void SetControlState(bool isEditing)
         {
-            txtMaKhan.Enabled = !isEditing;
-            txtTenKhan.Enabled = isEditing;
-            cboLoaiKhan.Enabled = isEditing;
-            cboNhaCungCap.Enabled = isEditing;
-            txtGiaBan.Enabled = isEditing;
-            txtSoLuongTon.Enabled = isEditing;
+            txtTenKhan.Enabled = !isEditing;
+            txtGiaBan.Enabled = !isEditing;
+            txtSoLuongTon.Enabled = !isEditing;
+            cboLoaiKhan.Enabled = !isEditing;
+            cboNhaCungCap.Enabled = !isEditing;
 
-            btnLuu.Enabled = isEditing;
-            btnThem.Enabled = !isEditing;
-            btnSua.Enabled = !isEditing;
-            btnXoa.Enabled = !isEditing;
+            btnLuu.Enabled = !isEditing;
+            btnHuy.Enabled = !isEditing;
+
+            btnThem.Enabled = isEditing;
+            btnSua.Enabled = isEditing;
+            btnXoa.Enabled = isEditing;
+            dgvKhanQuangCo.Enabled = isEditing;
         }
 
         private void dgvKhanQuangCo_SelectionChanged(object sender, EventArgs e)
@@ -85,7 +77,6 @@ namespace bkqc.GUI
                 txtGiaBan.Text = row.Cells["GiaBan"].Value.ToString();
                 txtSoLuongTon.Text = row.Cells["SoLuongTon"].Value.ToString();
 
-                SetControlState(isEditing: false);
             }
         }
 
@@ -143,108 +134,115 @@ namespace bkqc.GUI
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs()) return;
-
-            try
+            if (string.IsNullOrEmpty(txtTenKhan.Text))
             {
-                KhanQuangCoDTO kh = new KhanQuangCoDTO
-                {
-                    TenKhan = txtTenKhan.Text.Trim(),
-                    MaLoaiKhan = (int)cboLoaiKhan.SelectedValue,
-                    MaNhaCungCap = (int)cboNhaCungCap.SelectedValue,
-                    GiaBan = double.Parse(txtGiaBan.Text.Trim()),
-                    SoLuongTon = int.Parse(txtSoLuongTon.Text.Trim())
-                };
+                MessageBox.Show("Tên khách hàng không được để trống.");
+                return;
+            }
 
-                bool success;
-                if (isAddingNew)
+            if (!int.TryParse(txtGiaBan.Text.Trim(), out int giaBan))
+            {
+                MessageBox.Show("Giá bán không hợp lệ!");
+                return;
+            }
+
+            if (!int.TryParse(txtSoLuongTon.Text.Trim(), out int soLuongTon))
+            {
+                MessageBox.Show("Số lượng tồn không hợp lệ!");
+                return;
+            }
+
+            if (cboLoaiKhan.SelectedValue == null || cboNhaCungCap.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn đầy đủ loại khăn và nhà cung cấp!");
+                return;
+            }
+
+            KhanQuangCoDTO k = new KhanQuangCoDTO
+            {
+                TenKhan = txtTenKhan.Text.Trim(),
+                GiaBan = double.Parse(txtGiaBan.Text),
+                MaLoaiKhan = Convert.ToInt32(cboLoaiKhan.SelectedValue),
+                MaNhaCungCap = Convert.ToInt32(cboNhaCungCap.SelectedValue),
+                SoLuongTon = int.Parse(txtSoLuongTon.Text)
+            };
+
+
+            bool success = false;
+
+            if (isAddingNew)
+            {
+                if (ValidateInputs())
                 {
-                    success = khanBLL.Insert(kh);
+                success = khanBLL.Insert(k);
+
                 }
                 else
                 {
-                    if (!int.TryParse(txtMaKhan.Text, out int maKhan))
-                    {
-                        MessageBox.Show("Mã khăn quàng cổ không hợp lệ.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    kh.MaKhan = maKhan;
-                    success = khanBLL.Update(kh);
-                }
-
-                if (success)
-                {
-                    MessageBox.Show("Lưu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadKhanQuangCo();
-                    SetControlState(isEditing: false);
-                    isAddingNew = false;
-                }
-                else
-                {
-                    MessageBox.Show("Lưu thất bại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Thêm không thành công");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Lỗi khi lưu dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                k.MaKhan = int.Parse(txtMaKhan.Text);
+                success = khanBLL.Update(k);
             }
+
+            if (success)
+            {
+                MessageBox.Show("Lưu thành công.");
+                LoadKhanQuangCo();
+                SetControlState(true);
+            }
+            else
+            {
+                MessageBox.Show("Lưu thất bại.");
+            }
+
         }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
             isAddingNew = true;
-            ClearInputFields();
-            SetControlState(isEditing: true);
-            txtMaKhan.Enabled = false; 
-            txtTenKhan.Focus();
+            ClearInput();
+            SetControlState(false);
         }
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtMaKhan.Text))
+            if (string.IsNullOrEmpty(txtMaKhan.Text))
             {
-                MessageBox.Show("Vui lòng chọn khăn cần sửa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn khách hàng cần sửa.");
                 return;
             }
             isAddingNew = false;
-            SetControlState(isEditing: true);
-            txtTenKhan.Focus();
+            SetControlState(false);
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtMaKhan.Text))
+            if (string.IsNullOrEmpty(txtMaKhan.Text))
             {
-                MessageBox.Show("Vui lòng chọn khăn cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn khách hàng cần xóa.");
                 return;
             }
-
-            DialogResult dr = MessageBox.Show("Bạn có chắc chắn muốn xóa khăn này?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.Yes)
+            int maKH = int.Parse(txtMaKhan.Text);
+            var result = MessageBox.Show("Bạn có chắc muốn xóa khách hàng này?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                try
+                if (khanBLL.Delete(maKH))
                 {
-                    int maKhan = int.Parse(txtMaKhan.Text);
-                    bool success = khanBLL.Delete(maKhan);
-                    if (success)
-                    {
-                        MessageBox.Show("Xóa thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadKhanQuangCo();
-                        ClearInputFields();
-                        SetControlState(isEditing: false);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Xóa thất bại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Xóa thành công.");
+                    LoadKhanQuangCo();
+                    LoadComboBoxes();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("Lỗi khi xóa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Xóa thất bại.");
                 }
             }
         }
-        private void ClearInputFields()
+        private void ClearInput()
         {
             txtMaKhan.Text = "";
             txtTenKhan.Text = "";
@@ -252,6 +250,20 @@ namespace bkqc.GUI
             cboNhaCungCap.SelectedIndex = -1;
             txtGiaBan.Text = "";
             txtSoLuongTon.Text = "";
+        }
+
+        private void frmKhanQuangCo_Load(object sender, EventArgs e)
+        {
+            LoadComboBoxes();
+            LoadKhanQuangCo();
+            SetControlState(true);
+        }
+
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            LoadKhanQuangCo();
+            LoadComboBoxes();
+            SetControlState(true);
         }
     }
 }

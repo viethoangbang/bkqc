@@ -31,10 +31,11 @@
             btnThem = new Button();
             dgvLoaiKhan = new DataGridView();
             txtTenLoai = new TextBox();
-            btnLamMoi = new Button();
-            btnTim = new Button();
             btnXoa = new Button();
             btnSua = new Button();
+            txtID = new TextBox();
+            btnLuu = new Button();
+            btnHuy = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvLoaiKhan).BeginInit();
             SuspendLayout();
             // 
@@ -63,35 +64,12 @@
             // 
             // txtTenLoai
             // 
-            txtTenLoai.Location = new Point(12, 254);
+            txtTenLoai.Location = new Point(12, 276);
             txtTenLoai.Name = "txtTenLoai";
             txtTenLoai.PlaceholderText = "Tên loại khăn";
             txtTenLoai.Size = new Size(776, 23);
             txtTenLoai.TabIndex = 2;
             txtTenLoai.TextChanged += txtTenLoai_TextChanged;
-            // 
-            // btnLamMoi
-            // 
-            btnLamMoi.BackColor = Color.Silver;
-            btnLamMoi.FlatStyle = FlatStyle.Flat;
-            btnLamMoi.Location = new Point(713, 283);
-            btnLamMoi.Name = "btnLamMoi";
-            btnLamMoi.Size = new Size(75, 30);
-            btnLamMoi.TabIndex = 6;
-            btnLamMoi.Text = "Làm sạch";
-            btnLamMoi.UseVisualStyleBackColor = false;
-            btnLamMoi.Click += btnLamMoi_Click;
-            // 
-            // btnTim
-            // 
-            btnTim.BackColor = Color.FromArgb(255, 192, 128);
-            btnTim.FlatStyle = FlatStyle.Flat;
-            btnTim.Location = new Point(511, 324);
-            btnTim.Name = "btnTim";
-            btnTim.Size = new Size(129, 114);
-            btnTim.TabIndex = 7;
-            btnTim.Text = "Tìm";
-            btnTim.UseVisualStyleBackColor = false;
             // 
             // btnXoa
             // 
@@ -117,15 +95,51 @@
             btnSua.UseVisualStyleBackColor = false;
             btnSua.Click += btnSua_Click;
             // 
+            // txtID
+            // 
+            txtID.BackColor = Color.FromArgb(255, 128, 128);
+            txtID.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            txtID.Location = new Point(12, 247);
+            txtID.Name = "txtID";
+            txtID.PlaceholderText = "ID";
+            txtID.ReadOnly = true;
+            txtID.Size = new Size(33, 23);
+            txtID.TabIndex = 10;
+            // 
+            // btnLuu
+            // 
+            btnLuu.BackColor = Color.FromArgb(128, 255, 128);
+            btnLuu.FlatStyle = FlatStyle.Flat;
+            btnLuu.Location = new Point(484, 324);
+            btnLuu.Name = "btnLuu";
+            btnLuu.Size = new Size(291, 52);
+            btnLuu.TabIndex = 11;
+            btnLuu.Text = "Lưu";
+            btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.Click += btnLuu_Click;
+            // 
+            // btnHuy
+            // 
+            btnHuy.BackColor = Color.Silver;
+            btnHuy.FlatStyle = FlatStyle.Flat;
+            btnHuy.Location = new Point(484, 392);
+            btnHuy.Name = "btnHuy";
+            btnHuy.Size = new Size(291, 46);
+            btnHuy.TabIndex = 12;
+            btnHuy.Text = "Huỷ";
+            btnHuy.UseVisualStyleBackColor = false;
+            btnHuy.Click += btnHuy_Click;
+            // 
             // frmLoaiKhan
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnHuy);
+            Controls.Add(btnLuu);
+            Controls.Add(txtID);
             Controls.Add(btnSua);
             Controls.Add(btnXoa);
-            Controls.Add(btnTim);
-            Controls.Add(btnLamMoi);
             Controls.Add(txtTenLoai);
             Controls.Add(dgvLoaiKhan);
             Controls.Add(btnThem);
@@ -142,9 +156,10 @@
         private Button btnThem;
         private DataGridView dgvLoaiKhan;
         private TextBox txtTenLoai;
-        private Button btnLamMoi;
-        private Button btnTim;
         private Button btnXoa;
         private Button btnSua;
+        private TextBox txtID;
+        private Button btnLuu;
+        private Button btnHuy;
     }
 }

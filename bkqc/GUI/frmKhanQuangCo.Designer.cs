@@ -121,6 +121,7 @@
             btnHuy.TabIndex = 13;
             btnHuy.Text = "Huỷ";
             btnHuy.UseVisualStyleBackColor = false;
+            btnHuy.Click += btnHuy_Click;
             // 
             // btnXoa
             // 
@@ -188,6 +189,7 @@
             Controls.Add(txtMaKhan);
             Name = "frmKhanQuangCo";
             Text = "frmKhanQuangCo";
+            Load += frmKhanQuangCo_Load;
             ((System.ComponentModel.ISupportInitialize)dgvKhanQuangCo).EndInit();
             ResumeLayout(false);
             PerformLayout();

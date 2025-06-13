@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Windows.Forms;
 
 namespace bkqc.DAL
 {
@@ -18,6 +17,7 @@ namespace bkqc.DAL
             string fullPath = Path.GetFullPath(Path.Combine(Application.StartupPath, relativePath));
             connectionString = $@"Data Source={fullPath};Version=3;";
         }
+
         public List<KhanQuangCoDTO> GetAll()
         {
             var list = new List<KhanQuangCoDTO>();
@@ -26,7 +26,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaKhan, TenKhan, MaLoaiKhan FROM KhanQuangCo";
+                string query = "SELECT MaKhan, TenKhan, MaLoaiKhan, GiaBan, SoLuongTon, MaNhaCungCap FROM KhanQuangCo";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -35,9 +35,12 @@ namespace bkqc.DAL
                     {
                         list.Add(new KhanQuangCoDTO
                         {
-                            MaKhan = reader.GetInt32(0),
-                            TenKhan = reader.GetString(1),
-                            MaLoaiKhan = reader.GetInt32(2)
+                            MaKhan = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+                            TenKhan = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                            MaLoaiKhan = reader.IsDBNull(2) ? 0 : reader.GetInt32(2),
+                            GiaBan = reader.IsDBNull(3) ? 0 : reader.GetDouble(3),
+                            SoLuongTon = reader.IsDBNull(4) ? 0 : reader.GetInt32(4),
+                            MaNhaCungCap = reader.IsDBNull(5) ? 0 : reader.GetInt32(5)
                         });
                     }
                 }
@@ -53,7 +56,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaKhanQuangCo, TenKhan, MaLoaiKhan FROM KhanQuangCo WHERE MaKhanQuangCo=@id";
+                string query = "SELECT MaKhan, TenKhan, MaLoaiKhan, GiaBan, SoLuongTon, MaNhaCungCap FROM KhanQuangCo WHERE MaKhan=@id";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -65,7 +68,10 @@ namespace bkqc.DAL
                         {
                             MaKhan = reader.GetInt32(0),
                             TenKhan = reader.GetString(1),
-                            MaLoaiKhan = reader.GetInt32(2)
+                            MaLoaiKhan = reader.GetInt32(2),
+                            GiaBan = reader.GetDouble(3),
+                            SoLuongTon = reader.GetInt32(4),
+                            MaNhaCungCap = reader.GetInt32(5)
                         };
                     }
                 }
@@ -79,13 +85,28 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "INSERT INTO KhanQuangCo (TenKhan, MaLoaiKhan) VALUES (@ten, @maloai)";
+                string query = @"
+                    INSERT INTO KhanQuangCo 
+                    (TenKhan, MaLoaiKhan, GiaBan, SoLuongTon, MaNhaCungCap) 
+                    VALUES 
+                    (@ten, @maloai, @giaban, @soluong, @mancc);
+                    SELECT last_insert_rowid();";
+
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@ten", kqc.TenKhan);
                 cmd.Parameters.AddWithValue("@maloai", kqc.MaLoaiKhan);
+                cmd.Parameters.AddWithValue("@giaban", kqc.GiaBan);
+                cmd.Parameters.AddWithValue("@soluong", kqc.SoLuongTon);
+                cmd.Parameters.AddWithValue("@mancc", kqc.MaNhaCungCap);
 
-                int result = cmd.ExecuteNonQuery();
-                return result > 0;
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    kqc.MaKhan = Convert.ToInt32(result);
+                    return true;
+                }
+
+                return false;
             }
         }
 
@@ -95,10 +116,22 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "UPDATE KhanQuangCo SET TenKhan=@ten, MaLoaiKhan=@maloai WHERE MaKhanQuangCo=@id";
+                string query = @"
+                    UPDATE KhanQuangCo 
+                    SET 
+                        TenKhan = @ten,
+                        MaLoaiKhan = @maloai,
+                        GiaBan = @giaban,
+                        SoLuongTon = @soluong,
+                        MaNhaCungCap = @mancc
+                    WHERE MaKhan = @id";
+
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@ten", kqc.TenKhan);
                 cmd.Parameters.AddWithValue("@maloai", kqc.MaLoaiKhan);
+                cmd.Parameters.AddWithValue("@giaban", kqc.GiaBan);
+                cmd.Parameters.AddWithValue("@soluong", kqc.SoLuongTon);
+                cmd.Parameters.AddWithValue("@mancc", kqc.MaNhaCungCap);
                 cmd.Parameters.AddWithValue("@id", kqc.MaKhan);
 
                 int result = cmd.ExecuteNonQuery();
@@ -112,7 +145,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "DELETE FROM KhanQuangCo WHERE MaKhanQuangCo=@id";
+                string query = "DELETE FROM KhanQuangCo WHERE MaKhan=@id";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
 

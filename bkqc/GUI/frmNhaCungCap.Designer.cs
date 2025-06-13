@@ -35,9 +35,9 @@
             btnXoa = new Button();
             btnThem = new Button();
             btnSua = new Button();
-            btnTim = new Button();
-            btnReset = new Button();
             txtID = new TextBox();
+            btnLuu = new Button();
+            btnHuy = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvNhaCungCap).BeginInit();
             SuspendLayout();
             // 
@@ -79,9 +79,9 @@
             // 
             btnXoa.BackColor = Color.FromArgb(255, 192, 192);
             btnXoa.FlatStyle = FlatStyle.Flat;
-            btnXoa.Location = new Point(427, 362);
+            btnXoa.Location = new Point(427, 315);
             btnXoa.Name = "btnXoa";
-            btnXoa.Size = new Size(169, 67);
+            btnXoa.Size = new Size(169, 32);
             btnXoa.TabIndex = 6;
             btnXoa.Text = "Xoá";
             btnXoa.UseVisualStyleBackColor = false;
@@ -93,7 +93,7 @@
             btnThem.FlatStyle = FlatStyle.Flat;
             btnThem.Location = new Point(427, 280);
             btnThem.Name = "btnThem";
-            btnThem.Size = new Size(169, 67);
+            btnThem.Size = new Size(169, 29);
             btnThem.TabIndex = 7;
             btnThem.Text = "Thêm";
             btnThem.UseVisualStyleBackColor = false;
@@ -105,33 +105,11 @@
             btnSua.FlatStyle = FlatStyle.Flat;
             btnSua.Location = new Point(619, 280);
             btnSua.Name = "btnSua";
-            btnSua.Size = new Size(169, 67);
+            btnSua.Size = new Size(169, 29);
             btnSua.TabIndex = 8;
             btnSua.Text = "Sửa";
             btnSua.UseVisualStyleBackColor = false;
             btnSua.Click += btnSua_Click;
-            // 
-            // btnTim
-            // 
-            btnTim.BackColor = Color.FromArgb(255, 192, 128);
-            btnTim.FlatStyle = FlatStyle.Flat;
-            btnTim.Location = new Point(619, 362);
-            btnTim.Name = "btnTim";
-            btnTim.Size = new Size(169, 67);
-            btnTim.TabIndex = 9;
-            btnTim.Text = "Tìm kiếm";
-            btnTim.UseVisualStyleBackColor = false;
-            btnTim.Click += btnTim_Click;
-            // 
-            // btnReset
-            // 
-            btnReset.Location = new Point(12, 415);
-            btnReset.Name = "btnReset";
-            btnReset.Size = new Size(75, 23);
-            btnReset.TabIndex = 10;
-            btnReset.Text = "Refesh";
-            btnReset.UseVisualStyleBackColor = true;
-            btnReset.Click += btnReset_Click;
             // 
             // txtID
             // 
@@ -145,14 +123,38 @@
             txtID.Size = new Size(369, 23);
             txtID.TabIndex = 11;
             // 
+            // btnLuu
+            // 
+            btnLuu.BackColor = Color.LightGreen;
+            btnLuu.FlatStyle = FlatStyle.Flat;
+            btnLuu.Location = new Point(427, 376);
+            btnLuu.Name = "btnLuu";
+            btnLuu.Size = new Size(169, 62);
+            btnLuu.TabIndex = 12;
+            btnLuu.Text = "Lưu";
+            btnLuu.UseVisualStyleBackColor = false;
+            btnLuu.Click += btnLuu_Click;
+            // 
+            // btnHuy
+            // 
+            btnHuy.BackColor = Color.Silver;
+            btnHuy.FlatStyle = FlatStyle.Flat;
+            btnHuy.Location = new Point(619, 376);
+            btnHuy.Name = "btnHuy";
+            btnHuy.Size = new Size(169, 62);
+            btnHuy.TabIndex = 13;
+            btnHuy.Text = "Huỷ";
+            btnHuy.UseVisualStyleBackColor = false;
+            btnHuy.Click += btnHuy_Click;
+            // 
             // frmNhaCungCap
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnHuy);
+            Controls.Add(btnLuu);
             Controls.Add(txtID);
-            Controls.Add(btnReset);
-            Controls.Add(btnTim);
             Controls.Add(btnSua);
             Controls.Add(btnThem);
             Controls.Add(btnXoa);
@@ -177,8 +179,8 @@
         private Button btnXoa;
         private Button btnThem;
         private Button btnSua;
-        private Button btnTim;
-        private Button btnReset;
         private TextBox txtID;
+        private Button btnLuu;
+        private Button btnHuy;
     }
 }
