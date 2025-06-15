@@ -11,6 +11,10 @@ namespace bkqc.BLL
     public class NhanVienBLL
     {
         private NhanVienDAL dal = new NhanVienDAL();
+        public NhanVienDTO DangNhap(string tenDangNhap, string matKhau)
+        {
+            return dal.DangNhap(tenDangNhap, matKhau);
+        }
 
         public List<NhanVienDTO> GetAll()
         {

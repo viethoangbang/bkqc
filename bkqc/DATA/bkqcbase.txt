@@ -1,0 +1,59 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE NhanVien (
+    MaNhanVien INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenNhanVien TEXT NOT NULL,
+    TenDangNhap TEXT UNIQUE NOT NULL,
+    MatKhau TEXT NOT NULL
+);
+
+CREATE TABLE KhachHang (
+    MaKhachHang INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenKhachHang TEXT NOT NULL,
+    SoDienThoai TEXT,
+    NgayDangKy DATE
+);
+
+CREATE TABLE NhaCungCap (
+    MaNhaCungCap INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenNhaCungCap TEXT NOT NULL,
+    SoDienThoai TEXT,
+    DiaChi TEXT
+);
+
+CREATE TABLE LoaiKhan (
+    MaLoaiKhan INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenLoai TEXT NOT NULL
+);
+
+CREATE TABLE KhanQuangCo (
+    MaKhan INTEGER PRIMARY KEY AUTOINCREMENT,
+    TenKhan TEXT NOT NULL,
+    MaLoaiKhan INTEGER,
+    MaNhaCungCap INTEGER,
+    GiaBan REAL NOT NULL,
+    SoLuongTon INTEGER NOT NULL,
+    FOREIGN KEY (MaLoaiKhan) REFERENCES LoaiKhan(MaLoaiKhan),
+    FOREIGN KEY (MaNhaCungCap) REFERENCES NhaCungCap(MaNhaCungCap)
+);
+
+CREATE TABLE HoaDon (
+    MaHoaDon INTEGER PRIMARY KEY AUTOINCREMENT,
+    MaKhachHang INTEGER,
+    MaNhanVien INTEGER,
+    NgayLap DATE NOT NULL,
+    TongTien REAL,
+    FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang),
+    FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien)
+);
+
+CREATE TABLE ChiTietHoaDon (
+    MaChiTiet INTEGER PRIMARY KEY AUTOINCREMENT,
+    MaHoaDon INTEGER NOT NULL,
+    MaKhan INTEGER NOT NULL,
+    SoLuong INTEGER NOT NULL,
+    DonGia REAL NOT NULL,
+    ThanhTien REAL NOT NULL,
+    FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon),
+    FOREIGN KEY (MaKhan) REFERENCES KhanQuangCo(MaKhan)
+);
