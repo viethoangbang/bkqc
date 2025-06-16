@@ -24,7 +24,7 @@ namespace bkqc.GUI
             try
             {
                 cboLoaiKhan.DataSource = loaiKhanBLL.GetAll();
-                cboLoaiKhan.DisplayMember = "TenLoaiKhan";
+                cboLoaiKhan.DisplayMember = "TenLoai";
                 cboLoaiKhan.ValueMember = "MaLoaiKhan";
 
                 cboNhaCungCap.DataSource = nhaCungCapBLL.GetAll();

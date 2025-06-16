@@ -19,6 +19,7 @@
 	  <None Update="DATA\bkqc.db">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  
   </ItemGroup>
 
 </Project>

@@ -22,13 +22,14 @@ namespace bkqc.BLL
             return dal.GetById(id);
         }
 
-        public bool Insert(HoaDonDTO hd)
+        public int Insert(HoaDonDTO hd)
         {
             if (hd.MaKhachHang <= 0 || hd.MaNhanVien <= 0 || hd.NgayLap == null || hd.TongTien < 0)
-                return false;
+                return -1;
 
             return dal.Insert(hd);
         }
+
 
         public bool Update(HoaDonDTO hd)
         {

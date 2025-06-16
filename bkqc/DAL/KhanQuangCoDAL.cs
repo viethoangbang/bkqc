@@ -9,12 +9,17 @@ namespace bkqc.DAL
 {
     public class KhanQuangCoDAL
     {
-        private string relativePath = @"..\..\..\DATA\bkqc.db";
         private string connectionString;
 
         public KhanQuangCoDAL()
         {
-            string fullPath = Path.GetFullPath(Path.Combine(Application.StartupPath, relativePath));
+            string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DATA", "bkqc.db");
+
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException("Không tìm thấy file cơ sở dữ liệu", fullPath);
+            }
+
             connectionString = $@"Data Source={fullPath};Version=3;";
         }
 
@@ -26,7 +31,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaKhan, TenKhan, MaLoaiKhan, GiaBan, SoLuongTon, MaNhaCungCap FROM KhanQuangCo";
+                string query = "SELECT MaKhan, TenKhan, MaLoaiKhan, GiaBan, SoLuongTon, MaNhaCungCap FROM KhanQuangCo WHERE SoLuongTon > 0";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())

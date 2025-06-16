@@ -44,5 +44,15 @@ namespace bkqc.BLL
 
             return dal.Delete(id);
         }
+        public bool TruSoLuongTon(int maKhan, int soLuong)
+        {
+            var khan = dal.GetById(maKhan);
+            if (khan == null || khan.SoLuongTon < soLuong)
+                return false;
+
+            khan.SoLuongTon -= soLuong;
+            return dal.Update(khan);
+        }
+
     }
 }

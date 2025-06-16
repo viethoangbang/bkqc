@@ -35,69 +35,117 @@
             khănQuảngCáoToolStripMenuItem = new ToolStripMenuItem();
             hóaĐơnToolStripMenuItem = new ToolStripMenuItem();
             chiTiếtHóaĐơnToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            label1 = new Label();
+            btnDangXuat = new Button();
+            label2 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.AllowDrop = true;
-            menuStrip1.Dock = DockStyle.Fill;
+            menuStrip1.AutoSize = false;
+            menuStrip1.Dock = DockStyle.Bottom;
             menuStrip1.Font = new Font("Segoe UI", 10F);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { kháchHàngToolStripMenuItem, nhàCungCấpToolStripMenuItem, loạiKhănToolStripMenuItem, khănQuảngCáoToolStripMenuItem, hóaĐơnToolStripMenuItem, chiTiếtHóaĐơnToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.ImageScalingSize = new Size(32, 32);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { kháchHàngToolStripMenuItem, nhàCungCấpToolStripMenuItem, loạiKhănToolStripMenuItem, khănQuảngCáoToolStripMenuItem, hóaĐơnToolStripMenuItem, chiTiếtHóaĐơnToolStripMenuItem, toolStripMenuItem1 });
+            menuStrip1.Location = new Point(0, 87);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(625, 102);
+            menuStrip1.Padding = new Padding(11, 4, 0, 4);
+            menuStrip1.Size = new Size(1262, 346);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
+            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             // 
             // kháchHàngToolStripMenuItem
             // 
             kháchHàngToolStripMenuItem.Name = "kháchHàngToolStripMenuItem";
-            kháchHàngToolStripMenuItem.Size = new Size(93, 98);
+            kháchHàngToolStripMenuItem.Size = new Size(176, 338);
             kháchHàngToolStripMenuItem.Text = "Khách hàng";
             kháchHàngToolStripMenuItem.Click += kháchHàngToolStripMenuItem_Click;
             // 
             // nhàCungCấpToolStripMenuItem
             // 
             nhàCungCấpToolStripMenuItem.Name = "nhàCungCấpToolStripMenuItem";
-            nhàCungCấpToolStripMenuItem.Size = new Size(105, 98);
+            nhàCungCấpToolStripMenuItem.Size = new Size(200, 338);
             nhàCungCấpToolStripMenuItem.Text = "Nhà cung cấp";
             nhàCungCấpToolStripMenuItem.Click += nhàCungCấpToolStripMenuItem_Click;
             // 
             // loạiKhănToolStripMenuItem
             // 
             loạiKhănToolStripMenuItem.Name = "loạiKhănToolStripMenuItem";
-            loạiKhănToolStripMenuItem.Size = new Size(80, 98);
+            loạiKhănToolStripMenuItem.Size = new Size(151, 338);
             loạiKhănToolStripMenuItem.Text = "Loại khăn";
             loạiKhănToolStripMenuItem.Click += loạiKhănToolStripMenuItem_Click;
             // 
             // khănQuảngCáoToolStripMenuItem
             // 
             khănQuảngCáoToolStripMenuItem.Name = "khănQuảngCáoToolStripMenuItem";
-            khănQuảngCáoToolStripMenuItem.Size = new Size(113, 98);
+            khănQuảngCáoToolStripMenuItem.Size = new Size(215, 338);
             khănQuảngCáoToolStripMenuItem.Text = "Khăn quàng cổ";
             khănQuảngCáoToolStripMenuItem.Click += khănQuảngCáoToolStripMenuItem_Click;
             // 
             // hóaĐơnToolStripMenuItem
             // 
             hóaĐơnToolStripMenuItem.Name = "hóaĐơnToolStripMenuItem";
-            hóaĐơnToolStripMenuItem.Size = new Size(74, 98);
-            hóaĐơnToolStripMenuItem.Text = "Hóa đơn";
+            hóaĐơnToolStripMenuItem.Size = new Size(20, 338);
             // 
             // chiTiếtHóaĐơnToolStripMenuItem
             // 
             chiTiếtHóaĐơnToolStripMenuItem.Name = "chiTiếtHóaĐơnToolStripMenuItem";
-            chiTiếtHóaĐơnToolStripMenuItem.Size = new Size(120, 98);
-            chiTiếtHóaĐơnToolStripMenuItem.Text = "Chi tiết hóa đơn";
+            chiTiếtHóaĐơnToolStripMenuItem.Size = new Size(250, 338);
+            chiTiếtHóaĐơnToolStripMenuItem.Text = "Quan ly nhan vien";
+            chiTiếtHóaĐơnToolStripMenuItem.Click += chiTiếtHóaĐơnToolStripMenuItem_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(223, 338);
+            toolStripMenuItem1.Text = "Lich su hoa don";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            label1.Location = new Point(12, 20);
+            label1.Name = "label1";
+            label1.Size = new Size(152, 45);
+            label1.TabIndex = 1;
+            label1.Text = "Quan ly: ";
+            // 
+            // btnDangXuat
+            // 
+            btnDangXuat.ForeColor = Color.Red;
+            btnDangXuat.Location = new Point(1100, 19);
+            btnDangXuat.Name = "btnDangXuat";
+            btnDangXuat.Size = new Size(150, 46);
+            btnDangXuat.TabIndex = 2;
+            btnDangXuat.Text = "Dang xuat";
+            btnDangXuat.UseVisualStyleBackColor = true;
+            btnDangXuat.Click += btnDangXuat_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(29, 19);
+            label2.Name = "label2";
+            label2.Size = new Size(0, 32);
+            label2.TabIndex = 3;
             // 
             // frmMain
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(625, 102);
+            ClientSize = new Size(1262, 433);
+            Controls.Add(label2);
+            Controls.Add(btnDangXuat);
+            Controls.Add(label1);
             Controls.Add(menuStrip1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MainMenuStrip = menuStrip1;
+            Margin = new Padding(6);
             Name = "frmMain";
             Text = "frmMain";
             menuStrip1.ResumeLayout(false);
@@ -115,5 +163,9 @@
         private ToolStripMenuItem khănQuảngCáoToolStripMenuItem;
         private ToolStripMenuItem hóaĐơnToolStripMenuItem;
         private ToolStripMenuItem chiTiếtHóaĐơnToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private Label label1;
+        private Button btnDangXuat;
+        private Label label2;
     }
 }

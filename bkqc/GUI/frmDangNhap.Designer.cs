@@ -35,7 +35,6 @@
             txtMatKhau = new TextBox();
             lblThongBao = new Label();
             btnDangNhap = new Button();
-            btnThoat = new Button();
             SuspendLayout();
             // 
             // label1
@@ -77,45 +76,36 @@
             // 
             txtMatKhau.Location = new Point(242, 335);
             txtMatKhau.Name = "txtMatKhau";
+            txtMatKhau.PasswordChar = '*';
             txtMatKhau.Size = new Size(589, 39);
             txtMatKhau.TabIndex = 4;
             // 
             // lblThongBao
             // 
-            lblThongBao.AutoSize = true;
             lblThongBao.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblThongBao.ForeColor = Color.Red;
-            lblThongBao.Location = new Point(435, 505);
+            lblThongBao.Location = new Point(114, 500);
             lblThongBao.Name = "lblThongBao";
-            lblThongBao.Size = new Size(24, 37);
+            lblThongBao.Size = new Size(810, 53);
             lblThongBao.TabIndex = 5;
             lblThongBao.Text = " ";
+            lblThongBao.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnDangNhap
             // 
-            btnDangNhap.Location = new Point(242, 424);
+            btnDangNhap.Location = new Point(242, 422);
             btnDangNhap.Name = "btnDangNhap";
-            btnDangNhap.Size = new Size(397, 46);
+            btnDangNhap.Size = new Size(292, 46);
             btnDangNhap.TabIndex = 6;
             btnDangNhap.Text = "Dang nhap";
             btnDangNhap.UseVisualStyleBackColor = true;
             btnDangNhap.Click += btnDangNhap_Click;
-            // 
-            // btnThoat
-            // 
-            btnThoat.Location = new Point(654, 424);
-            btnThoat.Name = "btnThoat";
-            btnThoat.Size = new Size(177, 46);
-            btnThoat.TabIndex = 7;
-            btnThoat.Text = "Thoat";
-            btnThoat.UseVisualStyleBackColor = true;
             // 
             // frmDangNhap
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 562);
-            Controls.Add(btnThoat);
             Controls.Add(btnDangNhap);
             Controls.Add(lblThongBao);
             Controls.Add(txtMatKhau);
@@ -138,6 +128,5 @@
         private TextBox txtMatKhau;
         private Label lblThongBao;
         private Button btnDangNhap;
-        private Button btnThoat;
     }
 }

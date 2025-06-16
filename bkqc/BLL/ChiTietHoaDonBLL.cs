@@ -1,48 +1,52 @@
-﻿using bkqc.DAL;
-using bkqc.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿    using bkqc.DAL;
+    using bkqc.DTO;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
-namespace bkqc.BLL
-{
-    public class ChiTietHoaDonBLL
+    namespace bkqc.BLL
     {
-        private ChiTietHoaDonDAL dal = new ChiTietHoaDonDAL();
-
-        public List<ChiTietHoaDonDTO> GetAll()
+        public class ChiTietHoaDonBLL
         {
-            return dal.GetAll();
-        }
+            private ChiTietHoaDonDAL dal = new ChiTietHoaDonDAL();
 
-        public ChiTietHoaDonDTO GetById(int id)
+            public List<ChiTietHoaDonDTO> GetAll()
+            {
+                return dal.GetAll();
+            }
+
+            public ChiTietHoaDonDTO GetById(int id)
+            {
+                return dal.GetById(id);
+            }
+
+            public bool Insert(ChiTietHoaDonDTO ct)
+            {
+                if (ct.MaHoaDon <= 0 || ct.MaKhan <= 0 || ct.SoLuong <= 0 || ct.DonGia <= 0)
+                    return false;
+
+                return dal.Insert(ct);
+            }
+
+            public bool Update(ChiTietHoaDonDTO ct)
+            {
+                if (ct.MaChiTiet <= 0 || ct.MaHoaDon <= 0 || ct.MaKhan <= 0 || ct.SoLuong <= 0 || ct.DonGia <= 0)
+                    return false;
+
+                return dal.Update(ct);
+            }
+        public List<ChiTietHoaDonDTO> GetByMaHoaDon(int maHoaDon)
         {
-            return dal.GetById(id);
-        }
-
-        public bool Insert(ChiTietHoaDonDTO ct)
-        {
-            if (ct.MaHoaDon <= 0 || ct.MaKhan <= 0 || ct.SoLuong <= 0 || ct.DonGia <= 0)
-                return false;
-
-            return dal.Insert(ct);
-        }
-
-        public bool Update(ChiTietHoaDonDTO ct)
-        {
-            if (ct.MaChiTiet <= 0 || ct.MaHoaDon <= 0 || ct.MaKhan <= 0 || ct.SoLuong <= 0 || ct.DonGia <= 0)
-                return false;
-
-            return dal.Update(ct);
+            return dal.GetByMaHoaDon(maHoaDon);
         }
 
         public bool Delete(int id)
-        {
-            if (id <= 0) return false;
+            {
+                if (id <= 0) return false;
 
-            return dal.Delete(id);
+                return dal.Delete(id);
+            }
         }
     }
-}

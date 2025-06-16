@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Windows.Forms;
 
 namespace bkqc.DAL
 {
@@ -13,7 +12,6 @@ namespace bkqc.DAL
 
         public NhanVienDAL()
         {
-            // Đường dẫn sqlite sẽ được tự động copy nhờ .csproj
             string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DATA", "bkqc.db");
 
             if (!File.Exists(fullPath))
@@ -32,7 +30,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaNhanVien, TenNhanVien, TenDangNhap, MatKhau FROM NhanVien";
+                string query = @"SELECT MaNhanVien, TenNhanVien, TenDangNhap, MatKhau, VaiTro, TrangThai FROM NhanVien";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
@@ -43,7 +41,9 @@ namespace bkqc.DAL
                             MaNhanVien = reader.GetInt32(0),
                             TenNhanVien = reader.GetString(1),
                             TenDangNhap = reader.GetString(2),
-                            MatKhau = reader.GetString(3)
+                            MatKhau = reader.GetString(3),
+                            VaiTro = reader.IsDBNull(4) ? "NhanVien" : reader.GetString(4),
+                            TrangThai = reader.IsDBNull(5) ? 1 : reader.GetInt32(5)
                         });
                     }
                 }
@@ -60,7 +60,10 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaNhanVien, TenNhanVien, TenDangNhap, MatKhau FROM NhanVien WHERE MaNhanVien=@id";
+                string query = @"SELECT MaNhanVien, TenNhanVien, TenDangNhap, MatKhau, VaiTro, TrangThai 
+                                 FROM NhanVien 
+                                 WHERE MaNhanVien=@id";
+
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
@@ -74,7 +77,9 @@ namespace bkqc.DAL
                                 MaNhanVien = reader.GetInt32(0),
                                 TenNhanVien = reader.GetString(1),
                                 TenDangNhap = reader.GetString(2),
-                                MatKhau = reader.GetString(3)
+                                MatKhau = reader.GetString(3),
+                                VaiTro = reader.IsDBNull(4) ? "NhanVien" : reader.GetString(4),
+                                TrangThai = reader.IsDBNull(5) ? 1 : reader.GetInt32(5)
                             };
                         }
                     }
@@ -90,12 +95,17 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "INSERT INTO NhanVien (TenNhanVien, TenDangNhap, MatKhau) VALUES (@ten, @tdn, @mk)";
+                string query = @"INSERT INTO NhanVien 
+                         (TenNhanVien, TenDangNhap, MatKhau, VaiTro, TrangThai) 
+                         VALUES (@ten, @tdn, @mk, @vaitro, @trangthai)";
+
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@ten", nv.TenNhanVien);
                     cmd.Parameters.AddWithValue("@tdn", nv.TenDangNhap);
                     cmd.Parameters.AddWithValue("@mk", nv.MatKhau);
+                    cmd.Parameters.AddWithValue("@vaitro", nv.VaiTro ?? "NhanVien");
+                    cmd.Parameters.AddWithValue("@trangthai", nv.TrangThai);
 
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -108,12 +118,17 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "UPDATE NhanVien SET TenNhanVien=@ten, TenDangNhap=@tdn, MatKhau=@mk WHERE MaNhanVien=@id";
+                string query = @"UPDATE NhanVien 
+                                 SET TenNhanVien=@ten, TenDangNhap=@tdn, MatKhau=@mk, VaiTro=@vaitro, TrangThai=@trangthai 
+                                 WHERE MaNhanVien=@id";
+
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@ten", nv.TenNhanVien);
                     cmd.Parameters.AddWithValue("@tdn", nv.TenDangNhap);
                     cmd.Parameters.AddWithValue("@mk", nv.MatKhau);
+                    cmd.Parameters.AddWithValue("@vaitro", nv.VaiTro ?? "NhanVien");
+                    cmd.Parameters.AddWithValue("@trangthai", nv.TrangThai);
                     cmd.Parameters.AddWithValue("@id", nv.MaNhanVien);
 
                     return cmd.ExecuteNonQuery() > 0;
@@ -161,8 +176,8 @@ namespace bkqc.DAL
                                 TenNhanVien = reader.GetString(1),
                                 TenDangNhap = reader.GetString(2),
                                 MatKhau = reader.GetString(3),
-                                VaiTro = reader.GetString(4),
-                                TrangThai = reader.GetInt32(5)
+                                VaiTro = reader.IsDBNull(4) ? "NhanVien" : reader.GetString(4),
+                                TrangThai = reader.IsDBNull(5) ? 1 : reader.GetInt32(5)
                             };
                         }
                     }

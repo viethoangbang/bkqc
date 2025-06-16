@@ -10,8 +10,19 @@ namespace bkqc.DAL
 {
     public class HoaDonDAL
     {
-        private string connectionString = @"Data Source=your_database_path.db;Version=3;";
+        private string connectionString;
 
+        public HoaDonDAL()
+        {
+            string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DATA", "bkqc.db");
+
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException("Không tìm thấy file cơ sở dữ liệu", fullPath);
+            }
+
+            connectionString = $@"Data Source={fullPath};Version=3;";
+        }
         public List<HoaDonDTO> GetAll()
         {
             var list = new List<HoaDonDTO>();
@@ -20,7 +31,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaHoaDon, MaKhachHang, NgayBan, TongTien FROM HoaDon";
+                string query = "SELECT MaHoaDon, MaKhachHang, NgayLap, MaNhanVien, TongTien FROM HoaDon";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -32,8 +43,10 @@ namespace bkqc.DAL
                             MaHoaDon = reader.GetInt32(0),
                             MaKhachHang = reader.GetInt32(1),
                             NgayLap = reader.GetDateTime(2),
-                            TongTien = (double)reader.GetDecimal(3)
+                            MaNhanVien = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
+                            TongTien = reader.IsDBNull(4) ? 0 : Convert.ToDouble(reader["TongTien"]),
                         });
+
                     }
                 }
             }
@@ -48,7 +61,7 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "SELECT MaHoaDon, MaKhachHang, NgayBan, TongTien FROM HoaDon WHERE MaHoaDon=@id";
+                string query = "SELECT MaHoaDon, MaKhachHang, NgayLap, MaNhanVien, TongTien FROM HoaDon WHERE MaHoaDon=@id";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -61,7 +74,8 @@ namespace bkqc.DAL
                             MaHoaDon = reader.GetInt32(0),
                             MaKhachHang = reader.GetInt32(1),
                             NgayLap = reader.GetDateTime(2),
-                            TongTien = (double)reader.GetDecimal(3)
+                            MaNhanVien = reader.IsDBNull(3) ? 0 : reader.GetInt32(3),
+                            TongTien = reader.IsDBNull(4) ? 0 : Convert.ToDouble(reader["TongTien"])
                         };
                     }
                 }
@@ -69,22 +83,29 @@ namespace bkqc.DAL
             return hd;
         }
 
-        public bool Insert(HoaDonDTO hd)
+
+        public int Insert(HoaDonDTO hd)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
 
-                string query = "INSERT INTO HoaDon (MaKhachHang, NgayBan, TongTien) VALUES (@makh, @ngayban, @tongtien)";
-                SQLiteCommand cmd = new SQLiteCommand(query, conn);
-                cmd.Parameters.AddWithValue("@makh", hd.MaKhachHang);
-                cmd.Parameters.AddWithValue("@ngayban", hd.NgayLap);
-                cmd.Parameters.AddWithValue("@tongtien", hd.TongTien);
+                string query = "INSERT INTO HoaDon (MaKhachHang, MaNhanVien, NgayLap, TongTien) VALUES (@makh, @manv, @ngaylap, @tongtien); " +
+                               "SELECT last_insert_rowid();";
 
-                int result = cmd.ExecuteNonQuery();
-                return result > 0;
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@makh", hd.MaKhachHang);
+                    cmd.Parameters.AddWithValue("@manv", hd.MaNhanVien);
+                    cmd.Parameters.AddWithValue("@ngaylap", hd.NgayLap);
+                    cmd.Parameters.AddWithValue("@tongtien", hd.TongTien);
+
+                    object result = cmd.ExecuteScalar();
+                    return Convert.ToInt32(result);
+                }
             }
         }
+
 
         public bool Update(HoaDonDTO hd)
         {
@@ -92,12 +113,13 @@ namespace bkqc.DAL
             {
                 conn.Open();
 
-                string query = "UPDATE HoaDon SET MaKhachHang=@makh, NgayBan=@ngayban, TongTien=@tongtien WHERE MaHoaDon=@id";
+                string query = "UPDATE HoaDon SET MaKhachHang=@makh, MaNhanVien=@manv, NgayBan=@ngayban, TongTien=@tongtien WHERE MaHoaDon=@id";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 cmd.Parameters.AddWithValue("@makh", hd.MaKhachHang);
                 cmd.Parameters.AddWithValue("@ngayban", hd.NgayLap);
                 cmd.Parameters.AddWithValue("@tongtien", hd.TongTien);
                 cmd.Parameters.AddWithValue("@id", hd.MaHoaDon);
+                cmd.Parameters.AddWithValue("@manv", hd.MaNhanVien);
 
                 int result = cmd.ExecuteNonQuery();
                 return result > 0;

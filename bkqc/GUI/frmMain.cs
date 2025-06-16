@@ -40,5 +40,27 @@ namespace bkqc.GUI
             frmKhanQuangCo f = new frmKhanQuangCo();
             f.ShowDialog();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void btnDangXuat_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void chiTiếtHóaĐơnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmNhanVien f = new frmNhanVien();
+            f.ShowDialog();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            frmLichSuHoaDon f = new frmLichSuHoaDon();
+            f.ShowDialog();
+        }
     }
 }

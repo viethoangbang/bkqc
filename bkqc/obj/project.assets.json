@@ -2666,11 +2666,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Downloads\\c\\bkqc\\bkqc.csproj",
+      "projectUniqueName": "C:\\c\\bkqc\\bkqc.csproj",
       "projectName": "bkqc",
-      "projectPath": "\\\\Mac\\Home\\Downloads\\c\\bkqc\\bkqc.csproj",
+      "projectPath": "C:\\c\\bkqc\\bkqc.csproj",
       "packagesPath": "C:\\Users\\mac\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Downloads\\c\\bkqc\\obj\\",
+      "outputPath": "C:\\c\\bkqc\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
